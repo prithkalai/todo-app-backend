@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { userSchema } = require("./User");
 
 // Create data schema
 const todoSchema = new mongoose.Schema({
