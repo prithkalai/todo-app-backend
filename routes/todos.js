@@ -1,5 +1,5 @@
 const express = require("express");
-const { validate, Todos } = require("../models/Task");
+const { validate, Todos, validateCompleted } = require("../models/Task");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
@@ -27,8 +27,28 @@ router.post("/", auth, async (req, res) => {
   return res.send(result);
 });
 
+// Update Completed / Incomplete Todo
+router.put("/complete/:id", auth, async (req, res) => {
+  const { error } = validateCompleted(req.body);
+  if (error) {
+    return res.status(400).send({ message: validate.error.details[0].message });
+  }
+
+  const todo = await Todos.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { completed: req.body.completed },
+    },
+    { new: true }
+  );
+
+  if (!todo)
+    return res.status(404).send({ message: "Requested Todo not found..." });
+  return res.send({ data: todo });
+});
+
 // Update a Todo: PUT
-router.put("/:id", auth, async (req, res) => {
+router.put("/update/:id", auth, async (req, res) => {
   const valRes = validate(req.body);
 
   if (valRes.error) {

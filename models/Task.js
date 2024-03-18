@@ -8,6 +8,10 @@ const todoSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Create model
@@ -22,5 +26,14 @@ function validateTodos(reqBody) {
   return todoSchema.validate(reqBody);
 }
 
+function validateCompleteTodos(reqBody) {
+  const todoSchema = Joi.object({
+    completed: Joi.boolean().required(),
+  });
+
+  return todoSchema.validate(reqBody);
+}
+
 module.exports.Todos = Todos;
 module.exports.validate = validateTodos;
+module.exports.validateCompleted = validateCompleteTodos;
