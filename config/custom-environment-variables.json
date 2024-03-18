@@ -1,0 +1,5 @@
+{
+  "JWTPRIVATEKEY": "JWT_KEY",
+  "DB_AUTH": "DB_AUTH",
+  "DB_USER": "DB_USER"
+}
